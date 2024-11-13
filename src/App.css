@@ -5,14 +5,14 @@
   object-fit: cover;
   filter:contrast(160%);
   padding-top: 30px;
-  height: 100vh;
+  height: 640px;
 }
 .lastrow{
   width: 400px;
   overflow-x: scroll;
 }
 ::-webkit-scrollbar{
-  width: 380px;
+  width: inherit;
 }
 ::-webkit-scrollbar-track{
   border-radius: 15px;
@@ -37,7 +37,7 @@
 }
 .wether{
   width: 400px;
-  height: 90vh;
+  height: 90%;
   background-image: linear-gradient(135deg,rgba(255,255,255,0.13),rgba(255, 255, 255, 0));
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(10px);
@@ -203,4 +203,14 @@ color: white;
   width: 60%;
   background-color: transparent;
 
+}
+@media screen and (min-width:0px) and (max-width:415px) {
+  .wethercontainer{
+    width: 440px !important;
+    padding: 30px 10px !important;
+    height: 670px;
+    
+  }
+
+  
 }
