@@ -8,7 +8,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { slicesaction } from "./Redux/Store/Slices";
 import { MdOutlineWater, MdOutlineWaterDrop } from "react-icons/md";
 import { BiWater } from "react-icons/bi";
+import logo from "./assets/homepics.webp";
 import Lastrow from "./Components/Lastrow/Index";
+import loding from './assets/isloadingpic.gif'
 
 function App() {
   const name = useSelector((state) => state.rootreducer.name);
@@ -23,7 +25,7 @@ function App() {
   const dispatch = useDispatch();
 
   const [name1, setName] = useState("");
-  const [imgurl, setimgurl] = useState("01n");
+  const [imgurl, setimgurl] = useState("");
   const [o, seto] = useState("");
   const [c, setc] = useState("");
   const [humidity, sethumidity] = useState("");
@@ -58,9 +60,11 @@ function App() {
   let m = data.getMonth();
   let d = data.getDay();
 
+  const [isloading, setisloading] = useState(false);
   const handleclick = async () => {
-    let api = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${name1}&appid=a541aebeee5807ae71dd0d1aee211c56&units=metric`
+
+    setisloading(true)
+    let api = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${name1}&appid=a541aebeee5807ae71dd0d1aee211c56&units=metric`
     );
     let data = await api.json();
     let imgpic = data.weather[0].icon;
@@ -68,7 +72,7 @@ function App() {
     let hum = data.main.humidity;
     let wind = data.wind.speed;
     let desc = data.weather[0].main;
-
+    setisloading(false);
     dispatch(slicesaction.handlename(name1));
     dispatch(slicesaction.handleday(d));
     dispatch(slicesaction.handledate(T));
@@ -104,7 +108,6 @@ function App() {
                 value={name1}
                 onChange={handlechange}
                 placeholder="Enter City Name"
-                
               />
               <div className="searchicon">
                 <i>
@@ -112,74 +115,117 @@ function App() {
                 </i>
               </div>
             </div>
-            <div className="firstrow">
-              <div className="loction">
-                <i>{date && <CiLocationOn size={30} />}</i>
-                <span>{name}</span>
-              </div>
-              <div className="date">
-                {datearr.map((item, index) => {
-                  return index == day && <span>{item},</span>;
-                })}
-                <div className="month">
-                  <span>{date}</span>
-                  {montharr.map((item, index) => {
-                    return index == month && <span>{item}</span>;
-                  })}
+            {date ? (
+              <div>
+                <div className="firstrow">
+                  <div className="loction">
+                    <i>{date && <CiLocationOn size={30} />}</i>
+                    <span>{name}</span>
+                  </div>
+                  <div className="date">
+                    {datearr.map((item, index) => {
+                      return index == day && <span>{item},</span>;
+                    })}
+                    <div className="month">
+                      <span>{date}</span>
+                      {montharr.map((item, index) => {
+                        return index == month && <span>{item}</span>;
+                      })}
+                    </div>
+                  </div>
+                </div>
+                <div className="firstrow">
+                  <img
+                    height="150px"
+                    src={`https://openweathermap.org/img/w/${imgurl}.png`}
+                    alt="icon"
+                  />
+                  <div className="temperture">
+                    <h2>
+                      {temp}
+                      <span>
+                        {" "}
+                        <sup>{o}</sup>
+                        {c}
+                      </span>
+                    </h2>
+                    <span>{desc}</span>
+                  </div>
+                </div>
+                <div className="firstrow">
+                  <div className="humidity">
+                    <i>
+                      <MdOutlineWaterDrop size={50} color="white" />
+                    </i>
+                    <div className="temperture">
+                      <span>{humidity}</span>
+                      <h2>{hum}</h2>
+                    </div>
+                  </div>
+                  <div className="humidity">
+                    <i>
+                      <BiWater size={50} color="white" />
+                    </i>
+
+                    <div className="temperture">
+                      <span>{wspeed}</span>
+                      <h2>{wind}</h2>
+                    </div>
+                  </div>
+                </div>
+                <div className="lastrow">
+                  <Lastrow
+                    imgurl={imgurl}
+                    date={date}
+                    montharr={montharr}
+                    temp={temp}
+                    day={day}
+                    month={month}
+                  />
+                  <Lastrow
+                    imgurl={imgurl}
+                    date={date}
+                    montharr={montharr}
+                    temp={temp}
+                    day={day}
+                    month={month}
+                  />
+                  <Lastrow
+                    imgurl={imgurl}
+                    date={date}
+                    montharr={montharr}
+                    temp={temp}
+                    day={day}
+                    month={month}
+                  />
+                  <Lastrow
+                    imgurl={imgurl}
+                    date={date}
+                    montharr={montharr}
+                    temp={temp}
+                    day={day}
+                    month={month}
+                  />
+                  <Lastrow
+                    imgurl={imgurl}
+                    date={date}
+                    montharr={montharr}
+                    temp={temp}
+                    day={day}
+                    month={month}
+                  />
                 </div>
               </div>
-            </div>
-            <div className="firstrow">
-              <img
-                height="150px"
-                src={`https://openweathermap.org/img/w/${imgurl}.png`}
-                alt="icon"
-              />
-              <div className="temperture">
-                <h2>
-                  {temp}
-                  <span>
-                    {" "}
-                    <sup>{o}</sup>
-                    {c}
-                  </span>
-                </h2>
-                <span>{desc}</span>
+            ) : isloading ? (
+              <div className="loading">
+                <img src={loding}  alt="isloading" />
               </div>
-            </div>
-            <div className="firstrow">
-              <div className="humidity">
-                {date && (
-                  <i>
-                    <MdOutlineWaterDrop size={50} color="white" />
-                  </i>
-                )}
-                <div className="temperture">
-                  <span>{humidity}</span>
-                  <h2>{hum}</h2>
-                </div>
+            ) : (
+              <div className="wecomepage">
+                <h2>WELCOME TO OUR WEATHER APPLICATION</h2>
+                <img src={logo} alt="" />
               </div>
-              <div className="humidity">
-                {date && (
-                  <i>
-                    <BiWater size={50} color="white" />
-                  </i>
-                )}
-                <div className="temperture">
-                  <span>{wspeed}</span>
-                  <h2>{wind}</h2>
-                </div>
-              </div>
-            </div>
-            <div className="lastrow">
-              
-              <Lastrow imgurl={imgurl} date={date} montharr={montharr} temp={temp} day={day} month={month}/>
-              <Lastrow imgurl={imgurl} date={date} montharr={montharr} temp={temp} day={day} month={month}/>
-              <Lastrow imgurl={imgurl} date={date} montharr={montharr} temp={temp} day={day} month={month}/>
-              <Lastrow imgurl={imgurl} date={date} montharr={montharr} temp={temp} day={day} month={month}/>
-              <Lastrow imgurl={imgurl} date={date} montharr={montharr} temp={temp} day={day} month={month}/>
-            
-            </div>
+            )}
           </div>
         </div>
       </div>
